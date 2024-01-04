@@ -28,6 +28,10 @@ class StockPicking(models.Model):
                     "move_line_ids"
                 )
                 for po_move_line in po_move_lines:
+                    if move_line.lot_id or move_line.lot_name:
+                        qty_done = 0
+                        po_picks |= po_move_line.picking_id
+                        continue
                     if po_move_line.product_qty >= qty_done:
                         po_move_line.qty_done = qty_done
                         qty_done = 0.0
